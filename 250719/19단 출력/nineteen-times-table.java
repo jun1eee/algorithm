@@ -8,7 +8,6 @@ public class Main {
                     System.out.println(i+" * "+j+" = "+i*j);
                 }
             }
-            System.out.println();
         }
         // Please write your code here.
     }
