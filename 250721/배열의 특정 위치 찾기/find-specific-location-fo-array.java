@@ -21,7 +21,7 @@ public class Main {
             cnt++;
         }
 
-        System.out.print(sum1+ " " + (double)sum2/cnt);
+        System.out.printf("%d %.1f", sum1, (double)sum2/cnt);
         // Please write your code here.
     }
 }
