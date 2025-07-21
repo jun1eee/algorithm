@@ -15,7 +15,7 @@ public class Main {
             for (int j=0; j<4; j++){
                 sum += arr[i][j];
             }
-            System.out.print(sum/4+" ");
+            System.out.printf("%.1f ",sum/4);
         }
         System.out.println();
 
@@ -25,7 +25,7 @@ public class Main {
             for (int j=0; j<2; j++){
                 sum += arr[j][i];
             }
-            System.out.print(sum/2+" ");
+            System.out.printf("%.1f ",sum/2);
         }
         System.out.println();
         double sum = 0;
@@ -35,7 +35,7 @@ public class Main {
                 sum += arr[i][j];
             }
         }
-        System.out.print(sum/8+" ");
+        System.out.printf("%.1f ",sum/8);
         // Please write your code here.
     }
 }
