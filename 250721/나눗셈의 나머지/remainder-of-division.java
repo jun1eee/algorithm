@@ -5,15 +5,14 @@ public class Main {
         Scanner sc = new  Scanner(System.in);
         int a = sc.nextInt();
         int b = sc.nextInt();
-        int[] arr = new int[10];
+        int[] arr = new int[b];
 
-        while (true) {
+        while (a>=1) {
             arr[a%b]++;
             a = a/b;
-            if (a<1) break;
         }
         int sum = 0;
-        for (int i=0; i<10; i++){
+        for (int i=0; i<b; i++){
             sum += arr[i]*arr[i];
         }
         System.out.print(sum);
