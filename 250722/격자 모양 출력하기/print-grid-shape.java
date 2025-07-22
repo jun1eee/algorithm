@@ -7,7 +7,7 @@ public class Main {
         int m = sc.nextInt();
         int[][] arr = new int[n+1][n+1];
 
-        for (int i=1; i<=n; i++){
+        for (int i=1; i<=m; i++){
             int r = sc.nextInt();
             int c = sc.nextInt();
             arr[r][c] = r*c;
