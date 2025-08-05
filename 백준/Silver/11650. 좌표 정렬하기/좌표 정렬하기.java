@@ -1,47 +1,29 @@
-import java.util.*;
-import java.io.*;
+import java.util.Arrays;
+import java.util.Scanner;
 
 public class Main {
-	public static class xyValue {
-		int x;
-		int y;
+	public static void main(String[] args) {
+		Scanner sc = new Scanner(System.in);
 		
-		public xyValue(int x, int y) {
-			this.x = x;
-			this.y = y;
-		}
-
-		@Override
-		public String toString() {
-			return  x + " " + y + "\n";
-		}
-		
-	}
-
-	public static void main(String[] args) throws IOException {
-		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		int N = Integer.parseInt(br.readLine());
-		xyValue[] v = new xyValue[N];
+		int N = sc.nextInt();		
+		int[][] arr = new int[N][2];
 		
 		for (int i = 0; i < N; i++) {
-			StringTokenizer st = new StringTokenizer(br.readLine());
-			v[i] = new xyValue(Integer.parseInt(st.nextToken()), Integer.parseInt(st.nextToken()));
+			for (int j = 0; j < 2; j++) {
+				arr[i][j] = sc.nextInt();
+			}
 		}
 		
-		Arrays.sort(v, new Comparator<xyValue>() {
-
-			@Override
-			public int compare(xyValue o1, xyValue o2) {
-				if (o1.x == o2.x) return o1.y - o2.y;
-				return o1.x - o2.x;
-			}
+		Arrays.sort(arr, (a, b) -> {
+		    if (a[0] != b[0]) {
+		        return Integer.compare(a[0], b[0]);
+		    } else {
+		        return Integer.compare(a[1], b[1]);
+		    }
 		});
 		
-		StringBuilder sb = new StringBuilder();
-		
 		for (int i = 0; i < N; i++) {
-			sb.append(v[i]);
+			System.out.println(arr[i][0] + " " + arr[i][1]);
 		}
-		System.out.println(sb);
 	}
 }
