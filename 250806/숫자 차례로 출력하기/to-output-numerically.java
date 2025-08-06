@@ -18,8 +18,8 @@ public class Main {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         int n = sc.nextInt();
-        printStars1(7);
+        printStars1(n);
         System.out.println();
-        printStars2(7);
+        printStars2(n);
     }
 }
