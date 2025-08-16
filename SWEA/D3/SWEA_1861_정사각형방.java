@@ -1,7 +1,7 @@
 import java.util.*;
 import java.io.*;
 
-public class Solution {
+public class SWEA_1861_정사각형방 {
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		int T = Integer.parseInt(br.readLine());
