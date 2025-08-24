@@ -2,87 +2,103 @@ import java.io.*;
 import java.util.*;
 
 public class Main {
-    static int R, C;
-    static char[][] map;
-    static int[][] fireT;                 // 불의 최단 도착 시간
-    static final int INF = 1_000_000_000;
-    static int[] dr = {-1, 1, 0, 0};
-    static int[] dc = {0, 0, -1, 1};
 
-    static boolean in(int r, int c) { return 0 <= r && r < R && 0 <= c && c < C; }
+	static int R, C;
+	static char[][] map;
+	static int[][] distF, distJ;
+	static int[] dx = { -1, 1, 0, 0 };
+	static int[] dy = { 0, 0, -1, 1 };
+	static Queue<Pair> jihunQ = new ArrayDeque<>();
+	static Queue<Pair> fireQ = new ArrayDeque<>();
 
-    public static void main(String[] args) throws Exception {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringTokenizer st = new StringTokenizer(br.readLine());
-        R = Integer.parseInt(st.nextToken());
-        C = Integer.parseInt(st.nextToken());
+	public static void main(String[] args) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		StringTokenizer st = new StringTokenizer(br.readLine());
+		R = Integer.parseInt(st.nextToken());
+		C = Integer.parseInt(st.nextToken());
+		map = new char[R][C];
 
-        map = new char[R][C];
-        fireT = new int[R][C];
-        for (int i = 0; i < R; i++) Arrays.fill(fireT[i], INF);
+		distF = new int[R][C];
+		distJ = new int[R][C];
 
-        ArrayDeque<int[]> fq = new ArrayDeque<>();  // 불 큐 (다중 시작점)
-        int sr = -1, sc = -1;                       // 지훈 시작점
+		for (int i = 0; i < R; i++) {
+			String str = br.readLine();
+			for (int j = 0; j < C; j++) {
+				char tmp = str.charAt(j);
+				map[i][j] = tmp;
+				distF[i][j] = -1;
+				distJ[i][j] = -1;
+				if (tmp == 'J') {
+					jihunQ.offer(new Pair(i, j));
+					distJ[i][j] = 0;
+				} else if (tmp == 'F') {
+					fireQ.offer(new Pair(i, j));
+					distF[i][j] = 0;
+				}
+			}
+		}
 
-        for (int i = 0; i < R; i++) {
-            String s = br.readLine();
-            for (int j = 0; j < C; j++) {
-                char ch = s.charAt(j);
-                map[i][j] = ch;
-                if (ch == 'J') { sr = i; sc = j; }
-                else if (ch == 'F') { fireT[i][j] = 0; fq.add(new int[]{i, j}); }
-            }
-        }
+		fireBFS();
+		int answer = jihunBFS();
+		System.out.println( answer == -1 ? "IMPOSSIBLE" : answer);
+	}
 
-        // 1) 불 BFS (다중 시작점)
-        while (!fq.isEmpty()) {
-            int[] cur = fq.poll();
-            int r = cur[0], c = cur[1];
-            for (int k = 0; k < 4; k++) {
-                int nr = r + dr[k], nc = c + dc[k];
-                if (!in(nr, nc) || map[nr][nc] == '#') continue;
-                if (fireT[nr][nc] != INF) continue;
-                fireT[nr][nc] = fireT[r][c] + 1;
-                fq.add(new int[]{nr, nc});
-            }
-        }
+	public static void fireBFS() {
+		while (!fireQ.isEmpty()) {
+			Pair cur = fireQ.poll();
+			int x = cur.x;
+			int y = cur.y;
 
-        // 2) 지훈 BFS
-        int ans = bfsJihun(sr, sc);
-        System.out.println(ans == -1 ? "IMPOSSIBLE" : ans);
-    }
+			for (int i = 0; i < 4; i++) {
+				int nx = x + dx[i];
+				int ny = y + dy[i];
 
-    static int bfsJihun(int sr, int sc) {
-        ArrayDeque<int[]> q = new ArrayDeque<>();
-        int[][] dist = new int[R][C];
-        for (int i = 0; i < R; i++) Arrays.fill(dist[i], -1);
+				if (nx < 0 || ny < 0 || nx >= R || ny >= C)
+					continue;
+				if (distF[nx][ny] >= 0 || map[nx][ny] == '#')
+					continue;
 
-        dist[sr][sc] = 0;
-        q.add(new int[]{sr, sc});
+				distF[nx][ny] = distF[x][y] + 1;
+				fireQ.offer(new Pair(nx, ny));
+			}
 
-        // 시작이 가장자리면 한 걸음에 탈출
-        if (sr == 0 || sc == 0 || sr == R - 1 || sc == C - 1) return 1;
+		}
+	}
 
-        while (!q.isEmpty()) {
-            int[] cur = q.poll();
-            int r = cur[0], c = cur[1];
-            int t = dist[r][c];
+	public static int jihunBFS() {
 
-            for (int k = 0; k < 4; k++) {
-                int nr = r + dr[k], nc = c + dc[k];
-                int nt = t + 1;
+		while (!jihunQ.isEmpty()) {
+			Pair cur = jihunQ.poll();
+			int x = cur.x;
+			int y = cur.y;
 
-                // 바깥으로 나가면 탈출
-                if (!in(nr, nc)) return nt;
+			for (int i = 0; i < 4; i++) {
+				int nx = x + dx[i];
+				int ny = y + dy[i];
 
-                if (map[nr][nc] == '#' || dist[nr][nc] != -1) continue;
-                // 불이 같은 시각 또는 더 일찍 오면 못 감
-                if (fireT[nr][nc] <= nt) continue;
+				if (nx < 0 || ny < 0 || nx >= R || ny >= C) {
+					return distJ[x][y] + 1;
+				}
 
-                dist[nr][nc] = nt;
-                q.add(new int[]{nr, nc});
-            }
-        }
-        return -1;
-    }
+				if (distJ[nx][ny] >= 0 || map[nx][ny] == '#')
+					continue;
+
+				if (distF[nx][ny] != -1 && (distF[nx][ny] <= distJ[x][y] + 1))
+					continue;
+
+				distJ[nx][ny] = distJ[x][y] + 1;
+				jihunQ.offer(new Pair(nx, ny));
+			}
+		}
+		return -1;
+	}
+
+	static class Pair {
+		int x, y;
+
+		public Pair(int x, int y) {
+			this.x = x;
+			this.y = y;
+		}
+	}
 }
