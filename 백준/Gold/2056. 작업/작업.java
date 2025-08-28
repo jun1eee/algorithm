@@ -6,7 +6,6 @@ public class Main {
 	static ArrayList<Integer>[] edges;
 	static int[] indegree;
 	static int[] times;
-	static int[] dp;
 
 	public static void main(String[] args) throws Exception {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -14,7 +13,6 @@ public class Main {
 		edges = new ArrayList[N + 1];
 		indegree = new int[N + 1];
 		times = new int[N + 1];
-		dp = new int[N + 1];
 
 		for (int n = 1; n <= N; n++) {
 			edges[n] = new ArrayList<>();
@@ -37,25 +35,27 @@ public class Main {
 
 	public static int topologySort() {
 		Queue<Integer> q = new ArrayDeque<>();
+		int[] result = new int[N + 1];
 		for (int i = 1; i <= N; i++) {
-            if (indegree[i] == 0) {
-                q.add(i);
-                dp[i] = times[i];
-            }
-        }
+			if (indegree[i] == 0) {
+				q.add(i);
+				result[i] = times[i];
+			}
+		}
 
 		while (!q.isEmpty()) {
 			int cur = q.poll();
 			for (int next : edges[cur]) {
-				dp[next] = Math.max(dp[next], dp[cur] + times[next]);
+				result[next] = Math.max(result[next], result[cur] + times[next]);
 				indegree[next]--;
 				if (indegree[next] == 0)
 					q.add(next);
 			}
 		}
-		
+
 		int ans = 0;
-        for (int i = 1; i <= N; i++) ans = Math.max(ans, dp[i]);
-        return ans;
+		for (int i = 1; i <= N; i++)
+			ans = Math.max(ans, result[i]);
+		return ans;
 	}
 }
