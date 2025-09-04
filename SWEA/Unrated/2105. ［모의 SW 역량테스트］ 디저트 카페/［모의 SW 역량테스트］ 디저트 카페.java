@@ -23,15 +23,19 @@ public class Solution {
                     map[i][j] = Integer.parseInt(st.nextToken());
                 }
             }
+
             ans = -1;
+
             // 모든 시작점 시도 (가장자리는 사실상 불리하지만 DFS가 걸러줌)
             for (int r = 0; r < N; r++) {
                 for (int c = 0; c < N; c++) {
                     visited = new boolean[N][N];
                     used = new boolean[101];
+
                     sr = r; sc = c;
                     visited[r][c] = true;
                     used[map[r][c]] = true;
+
                     dfs(r, c, 0, 1); // (현재 r,c), 방향 0부터 시작, 먹은 개수 1
                 }
             }
@@ -45,8 +49,10 @@ public class Solution {
 	    for (int ndir = 0; ndir < 4; ndir++) {
 	        // 직진(dir) 또는 다음 방향(dir+1)만 허용
 	        if (ndir < dir || ndir > dir + 1) continue;
+
 	        int nr = r + dr[ndir];
 	        int nc = c + dc[ndir];
+
 	        // 사각형 닫기: 시작점 복귀 + 마지막 변(ndir==3) + 최소 4개 이상
 	        if (nr == sr && nc == sc && ndir == 3 && cnt >= 4) {
 	            ans = Math.max(ans, cnt);
@@ -56,11 +62,15 @@ public class Solution {
 	        // 경계/방문/디저트 중복 체크
 	        if (nr < 0 || nc < 0 || nr >= N || nc >= N) continue;
 	        if (visited[nr][nc]) continue;
+
 	        int d = map[nr][nc];
 	        if (used[d]) continue;
+
 	        visited[nr][nc] = true;
 	        used[d] = true;
+
 	        dfs(nr, nc, ndir, cnt + 1);
+
 	        visited[nr][nc] = false;
 	        used[d] = false;
 	    }
