@@ -43,16 +43,15 @@ public class Main {
 			for (int i = 0; i < N; i++) {
 				Arrays.fill(dist[i], INF);
 			}
-			dijkstra();
-			sb.append("Problem").append(" ").append(cnt++).append(": ").append(dist[N-1][N-1]).append("\n");
+			int result = dijkstra();
+			sb.append("Problem").append(" ").append(cnt++).append(": ").append(result).append("\n");
 			
 		}
 		System.out.println(sb.toString());
 	}
 
-	private static void dijkstra() {
+	private static int dijkstra() {
 		PriorityQueue<Node> pq = new PriorityQueue<>();
-		boolean[][] visited = new boolean[N][N];
 		dist[0][0] = map[0][0];
 		pq.offer(new Node(0, 0, dist[0][0]));
 		
@@ -60,19 +59,18 @@ public class Main {
 			Node curNode = pq.poll();
 			int curI = curNode.i;
 			int curJ = curNode.j;
-			if (visited[curI][curJ] == true)
-				continue;
-			visited[curI][curJ] = true;
+			int curWeight = curNode.weight;
+			if (curI == N-1 && curJ == N-1) return curWeight;
 			for (int i = 0; i < 4; i++) {
 				int nextI = curI + dr[i];
 				int nextJ = curJ + dc[i];
 				if (nextI < 0 || nextJ < 0 || nextI >= N || nextJ >= N) continue;
-				if (visited[nextI][nextJ]) continue;
 				if (dist[nextI][nextJ] > dist[curI][curJ] + map[nextI][nextJ]) {
 					dist[nextI][nextJ] = dist[curI][curJ] + map[nextI][nextJ];
 					pq.add(new Node(nextI, nextJ, dist[nextI][nextJ]));
 				}
 			}
 		}
+		return -1;
 	}
 }
