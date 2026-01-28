@@ -1,0 +1,12 @@
+n = int(input())
+for _ in range(n):
+	x, y, n = map(int, input().split())
+	if abs(x) + abs(y) > n:
+		print("NO")
+	elif abs(x) + abs(y) == n:
+		print("YES")
+	else:
+		if abs((abs(x) + abs(y)) - n) % 2 == 0:
+			print("YES")
+		else:
+			print("NO")
