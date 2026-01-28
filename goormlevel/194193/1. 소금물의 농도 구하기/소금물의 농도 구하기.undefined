@@ -1,0 +1,4 @@
+import math
+n, m = map(int,input().split())
+value = ((0.07)*n/(n+m))*100
+print(f"{math.floor(value * 100) / 100:.2f}")
