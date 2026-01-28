@@ -1,0 +1,13 @@
+n = int(input()) # 숫자판의 개수
+a = list(map(int, input().split())) # 최댓값
+b = list(map(int, input().split())) # 초기값
+k = int(input()) # 버튼을 누른 횟수
+tmp = k
+answer = []
+for i in range(n-1,-1,-1):
+	aa = a[i]
+	bb = b[i]
+	b[i] = (bb + tmp) % (aa + 1)
+	tmp = (bb + tmp) // (aa + 1)
+arr = map(str, b)
+print(''.join(arr))
