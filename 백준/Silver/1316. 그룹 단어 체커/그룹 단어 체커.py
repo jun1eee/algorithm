@@ -1,5 +1,5 @@
 n = int(input())
-cnt = 0
+ans = 0
 for _ in range(n):
     word = input()
     word_set = set()
@@ -14,5 +14,5 @@ for _ in range(n):
         else:
             word_set.add(w)
     if check:
-        cnt += 1
-print(cnt)
+        ans += 1
+print(ans)
