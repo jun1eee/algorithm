@@ -1,27 +1,24 @@
 n = int(input())
-switches = list(map(int, input().split()))
-student_num = int(input())
-for _ in range(student_num):
-    sex, num = map(int,input().split())
+switches = list(map(int,input().split()))
+k = int(input())
+for _ in range(k):
+    sex, number = map(int, input().split())
     if sex == 1:
-        i = 1
-        while True:
-            if num * i > n:
-                break
-            switches[num*i-1] = 1 - switches[num*i-1]
-            i += 1
+        index = number-1
+        while index < n:    
+            switches[index] ^= 1
+            index += number
     else:
-        switches[num-1] = 1 - switches[num-1]
-        i = 1
+        switches[number-1] ^= 1
+        left = right = number-1
         while True:
-            if 0<=num-i-1<n and 0<=num+i-1<n:
-                if switches[num-i-1] == switches[num+i-1]:
-                    switches[num-i-1] = 1 - switches[num-i-1]
-                    switches[num+i-1] = 1 - switches[num+i-1]
-                    i += 1
-                else:
-                    break
-            else: break
+            if left-1 >= 0 and right+1 < n and switches[left-1] == switches[right+1]:
+                switches[left-1] ^= 1
+                switches[right+1] ^= 1
+                left -= 1
+                right += 1
+            else:
+                break
 for i, s in enumerate(switches, 1):
     print(s, end=" ")
     if i % 20 == 0:
