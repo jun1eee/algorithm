@@ -1,0 +1,26 @@
+n = int(input())
+D = input()
+scores = list(map(int, input().split()))
+dirs = { 'U':(-1,0), 'D':(1,0), 'L':(0,-1), 'R':(0,1)}
+stack = [(0,0,1)]
+occupied = {(0,0)}
+for i in range(n):
+	dr, dc = dirs[D[i]]
+	r, c, _ = stack[-1]
+	nr, nc = r + dr, c + dc
+	if (nr, nc) not in occupied:
+		stack.append((nr,nc,scores[i]))
+		occupied.add((nr,nc))
+	else:
+		while True:
+			row, col, _ = stack.pop()
+			occupied.remove((row,col))
+			rr, cc, _ = stack[-1]
+			if nr == rr and nc == cc:
+				stack.pop()
+				stack.append((nr,nc,scores[i]))
+				break
+sum = 0
+for _, _, s in stack:
+	sum += s
+print(sum)
