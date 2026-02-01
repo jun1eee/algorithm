@@ -15,3 +15,21 @@ for i in range(m):
 				visited[k] = False
 for a in arr:
 	print(a, end=" ")
+# N, M = map(int,input().split())
+# heights = list(map(int, input().split()))
+# min_s = N
+# max_e = -1
+# for m in range(M):
+#     s, e = map(int, input().split())
+#     s, e = s-1, e-1
+#     min_s = min(min_s, s)
+#     max_e = max(max_e, e)
+#     for i in range(s,e+1):
+#         heights[i] += 1
+#     if (m+1) % 3 == 0:
+#         for i in range(min_s, max_e+1):
+#             heights[i] -= 1
+#         min_s = N
+#         max_e = -1
+# for h in heights:
+#     print(h, end=" ")
