@@ -1,35 +1,40 @@
-N, M = map(int, input().split())
-arr = [list(map(int, input().split())) for _ in range (N)]
-
-v= [[0] * M for _ in range (N)] # dfs 방문 표시 배열
-
-dx = [-1,1,0,0]
-dy = [0,0,-1,1]
-
-def dfs(n, temp, lst) :
-    global ans
-
-    # 종료 조건
-    if n == 4 :
-        ans = max(temp, ans)
-        return
-    
-    # 재귀 함수 호출 (자기 위치에서 뻣어나가기, 백트래킹)
-    for cx, cy in lst :
-        for i in range (4) :
-            nx, ny = cx + dx[i], cy + dy[i]
-            # 범위, 방문 검사
-            if 0 <= nx < N and 0<= ny < M and v[nx][ny] == 0 :
-                v[nx][ny] = 1
-                dfs(n+1, temp + arr[nx][ny], lst + [(nx, ny)])
-                v[nx][ny] = 0 # 방문표시 해제로 백트래킹
-
-
+n, m = map(int, input().split())
+arr = [list(map(int, input().split())) for _ in range(n)]
+visited = [[False]*m for _ in range(n)]
+dirs = [(-1,0),(1,0),(0,-1),(0,1)]
 ans = 0
+def dfs(r, c, depth, total):
+    global ans
+    if depth == 4:
+        ans = max(ans, total)
+        return
+    for dr, dc in dirs:
+        nr = r + dr
+        nc = c + dc
+        if 0 <= nr < n and 0 <= nc < m and not visited[nr][nc]:
+            visited[nr][nc] = True
+            dfs(nr, nc, depth + 1, total + arr[nr][nc])
+            visited[nr][nc] = False
 
-for i in range (N) :
-    for j in range (M) :
-        v[i][j] = 1
-        dfs(1, arr[i][j], [(i,j)])
+def check_T(r, c):
+    global ans
+    s = arr[r][c]
+    tmp = []
+    for dr, dc in dirs:
+        nr = r + dr
+        nc = c + dc
+        if 0 <= nr < n and 0 <= nc < m:
+            tmp.append(arr[nr][nc])
+    if len(tmp) >= 3:
+        tmp.sort(reverse=True)
+        ans = max(ans, s + tmp[0] + tmp[1] + tmp[2])
+
+for i in range(n):
+    for j in range(m):
+        visited[i][j] = True
+        dfs(i, j, 1, arr[i][j])
+        visited[i][j] = False
+
+        check_T(i, j)
 
 print(ans)
