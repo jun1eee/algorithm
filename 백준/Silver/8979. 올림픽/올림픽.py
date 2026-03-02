@@ -10,10 +10,8 @@ rank_dict = {countries[0][0]:1}
 
 for i in range(1,n):
     cur = countries[i][1:]
-    
     if cur != prev:
-        rank += 1
-    
+        rank = i + 1
     rank_dict[countries[i][0]] = rank
     prev = cur
 
