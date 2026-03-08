@@ -1,0 +1,16 @@
+import sys
+input = sys.stdin.readline
+while True:
+    l = list(map(int,input().split()))
+    if l[0] == 0 and l[1] == 0 and l[2] == 0:
+        break
+    l.sort()
+    if l[2] >= l[1] + l[0]:
+        print("Invalid")
+        continue
+    if l[0] == l[1] == l[2]:
+        print("Equilateral")
+    elif l[0] != l[1] and l[1] != l[2] and l[2] != l[0]:
+        print("Scalene")
+    else:
+        print("Isosceles")
