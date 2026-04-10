@@ -1,18 +1,18 @@
+import sys
+input = sys.stdin.readline
 n = int(input())
-ans = 0
+cnt = 0
 for _ in range(n):
     word = input()
     word_set = set()
     check = True
     for i, w in enumerate(word):
         if w in word_set:
-            if word[i] == word[i-1]:
-                continue
-            else:
+            if word[i] != word[i-1]:
                 check = False
                 break
-        else:
+        else :
             word_set.add(w)
     if check:
-        ans += 1
-print(ans)
+        cnt += 1
+print(cnt)
